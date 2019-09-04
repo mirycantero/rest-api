@@ -20,3 +20,8 @@ class GenderSchema(ma.Schema):
 class ProjectSchema(ma.Schema):
     class Meta:
         fields = ('project_id', 'name', 'description')
+
+
+class EmployeeSchema(ma.Schema):
+    class Meta:
+        fields = ('employee_id', 'company', 'gender', 'name', 'email')

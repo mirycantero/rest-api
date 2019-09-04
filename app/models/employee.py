@@ -1,4 +1,6 @@
 from .base import db
+from ..schemas import EmployeeSchema
+from ..models import Company, Gender
 
 
 class Employee(db.Model):
@@ -20,6 +22,21 @@ class Employee(db.Model):
 
     company = db.relationship('Company', uselist=False)
     gender = db.relationship('Gender', uselist=False)
+
+    def get_employees():
+        employees = (
+            db.session
+            .query(
+                Employee.employee_id,
+                Employee.name,
+                Employee.email,
+            )
+            .join(Company, Company.company_id == Employee.company_id)
+            .join(Gender, Gender.gender_id == Employee.gender_id)
+            .all()
+        )
+
+        return EmployeeSchema(many=True).dump(employees)
 
 
 class EmployeeHasProject(db.Model):

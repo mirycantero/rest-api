@@ -28,7 +28,9 @@ def create_app(test_config=None):
 
     # import and register blueprints http://flask.pocoo.org/docs/1.0/blueprints
     from .endpoints.catalogs import catalogs
+    from .endpoints.employees import employees
     app.register_blueprint(catalogs)
+    app.register_blueprint(employees)
 
     # register error Handlers
     for exc in default_exceptions:
