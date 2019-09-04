@@ -1,4 +1,21 @@
-from app import env
+import os
+from dotenv import load_dotenv
+load_dotenv()
+
+# Flask config #
+
+FLASK_ENV = os.environ.get('FLASK_ENV')
+
+# CloudSQL config #
+
+CLOUDSQL_USER = os.environ.get("CLOUDSQL_USER")
+CLOUDSQL_PASSWORD = os.environ.get("CLOUDSQL_PASSWORD")
+CLOUDSQL_DATABASE = os.environ.get("CLOUDSQL_DATABASE")
+CLOUDSQL_HOST = os.environ.get("CLOUDSQL_HOST")
+CLOUDSQL_PORT = os.environ.get("CLOUDSQL_PORT")
+CLOUDSQL_CONNECTION_NAME = os.environ.get("CLOUDSQL_CONNECTION_NAME")
+
+SQLALCHEMY_DATABASE_URI = os.environ.get("SQLALCHEMY_DATABASE_URI")
 
 
 # more configuration options here http://flask.pocoo.org/docs/1.0/config/
@@ -16,8 +33,8 @@ class LocalConfig(Config):
     """
 
     SQLALCHEMY_DATABASE_URI = (
-        f'postgresql+psycopg2://{env.CLOUDSQL_USER}:{env.CLOUDSQL_PASSWORD}'
-        f'@localhost:{env.CLOUDSQL_PORT}/{env.CLOUDSQL_DATABASE}'
+        f'postgresql+psycopg2://{CLOUDSQL_USER}:{CLOUDSQL_PASSWORD}'
+        f'@localhost:{CLOUDSQL_PORT}/{CLOUDSQL_DATABASE}'
     )
     DEBUG = True
 
@@ -28,9 +45,9 @@ class DevelopmentConfig(Config):
     """
 
     SQLALCHEMY_DATABASE_URI = (
-        f'postgresql+psycopg2://{env.CLOUDSQL_USER}:{env.CLOUDSQL_PASSWORD}'
-        f'@{env.CLOUDSQL_HOST}:{env.CLOUDSQL_PORT}/{env.CLOUDSQL_DATABASE}'
-        f'?host=/cloudsql/{env.CLOUDSQL_CONNECTION_NAME}'
+        f'postgresql+psycopg2://{CLOUDSQL_USER}:{CLOUDSQL_PASSWORD}'
+        f'@{CLOUDSQL_HOST}:{CLOUDSQL_PORT}/{CLOUDSQL_DATABASE}'
+        f'?host=/cloudsql/{CLOUDSQL_CONNECTION_NAME}'
     )
     DEBUG = True
 
@@ -40,7 +57,7 @@ class ProductionConfig(Config):
     Production Configuration
     """
 
-    SQLALCHEMY_DATABASE_URI = env.SQLALCHEMY_DATABASE_URI
+    SQLALCHEMY_DATABASE_URI = SQLALCHEMY_DATABASE_URI
     DEBUG = False
 
 

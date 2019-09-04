@@ -1,5 +1,9 @@
 Flask==1.0.2
+flask-cors==3.0.8
 flask-marshmallow==0.10.0
+Flask-Migrate==2.5.2
 Flask-SQLAlchemy==2.3.2
 marshmallow==3.0.0rc5
+marshmallow-sqlalchemy==0.16.2
+psycopg2==2.7.7
 python-dotenv==0.10.1

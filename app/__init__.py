@@ -4,6 +4,7 @@ from .config import config
 from .core import handle_error
 from flask import Flask
 from flask_marshmallow import Marshmallow
+from flask_migrate import Migrate
 from werkzeug.exceptions import default_exceptions
 
 
@@ -23,10 +24,11 @@ def create_app(test_config=None):
 
     db.init_app(app)  # initialize Flask SQLALchemy with this flask app
     Marshmallow(app)
+    Migrate(app, db)
 
-    # import and register blueprints http://flask.pocoo.org/docs/1.0/blueprints/
-    # from .endpoints.accounts import accounts
-    # app.register_blueprint(accounts)
+    # import and register blueprints http://flask.pocoo.org/docs/1.0/blueprints
+    from .endpoints.catalogs import catalogs
+    app.register_blueprint(catalogs)
 
     # register error Handlers
     for exc in default_exceptions:
