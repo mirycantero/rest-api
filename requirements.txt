@@ -7,3 +7,5 @@ marshmallow==3.0.0rc5
 marshmallow-sqlalchemy==0.16.2
 psycopg2==2.7.7
 python-dotenv==0.10.1
+pytest==4.4.0
+mock==2.0.0

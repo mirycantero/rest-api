@@ -11,7 +11,5 @@ convention = {
 }
 
 metadata = MetaData(naming_convention=convention)
-# instantiate database object
 db = SQLAlchemy(metadata=metadata)
-# Initialize Marshmallow
 ma = Marshmallow()

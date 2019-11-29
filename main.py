@@ -3,7 +3,6 @@ load_dotenv()
 
 from app import create_app
 
-# sets up the app
 app = create_app()
 
 
