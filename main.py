@@ -1,11 +1,15 @@
+import os
+
 from dotenv import load_dotenv
-load_dotenv()
 
 from app import create_app
 
-# sets up the app
-app = create_app()
+load_dotenv()
+
+FLASK_ENV = os.getenv('FLASK_ENV', 'dev')
+
+app = create_app(FLASK_ENV)
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)
+    app.run(host='localhost', port=8080, debug=True)

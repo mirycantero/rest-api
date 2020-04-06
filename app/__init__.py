@@ -1,39 +1,29 @@
-import os
-
-from .config import config
-from .core import handle_error
 from flask import Flask
-from flask_marshmallow import Marshmallow
-from flask_migrate import Migrate
-from werkzeug.exceptions import default_exceptions
+from os import environ
+
+APP_NAME = 'rest-api'
 
 
-def create_app(test_config=None):
-    app = Flask(__name__)
+def create_app(instance_name):
+    app = Flask(APP_NAME, instance_relative_config=True)
 
-    # check environment variables to see which config to load
-    env = os.environ.get("FLASK_ENV", "dev")
-    app.config.from_object(config[env])  # config dict is from app/config.py
+    # app.config.from_json(f'{instance_name}.json', silent=True)
+    app.config.from_json('local.json', silent=True)
+    app.config.from_mapping(environ)
 
-    # If set to True SQLAlchemy will log all the statements issued to stderr
-    # which can be useful for debugging.
-    app.config["SQLALCHEMY_ECHO"] = False
+    app.config['FLASK_ENV'] = instance_name
 
-    # register sqlalchemy to this app
-    from .models import db
+    with app.app_context():
+        from app import models
+        from app import endpoints
+        from app import schemas
+        from app import migrations
+        from app import database
 
-    db.init_app(app)  # initialize Flask SQLALchemy with this flask app
-    Marshmallow(app)
-    Migrate(app, db)
+        models.init_app(app)
+        endpoints.init_app(app)
+        schemas.init_app(app)
+        migrations.init_app(app)
+        database.init_app(app)
 
-    # import and register blueprints http://flask.pocoo.org/docs/1.0/blueprints
-    from .endpoints.catalogs import catalogs
-    from .endpoints.employees import employees
-    app.register_blueprint(catalogs)
-    app.register_blueprint(employees)
-
-    # register error Handlers
-    for exc in default_exceptions:
-        app.register_error_handler(exc, handle_error)
-
-    return app
+        return app

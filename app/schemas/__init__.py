@@ -1,5 +1,8 @@
-from .schemas import IndustrySchema, StateSchema, GenderSchema, ProjectSchema
-from .schemas import EmployeeSchema
+from flask import Flask
+from flask_marshmallow import Marshmallow
 
-__all__ = ["IndustrySchema", "StateSchema",
-           "GenderSchema", "ProjectSchema", "EmployeeSchema"]
+from .schemas import CerealSchema
+
+
+def init_app(app: Flask):
+    Marshmallow(app)

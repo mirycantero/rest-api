@@ -1,6 +1,6 @@
 from sqlalchemy import MetaData
-from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
 convention = {
     "ix": 'ix_%(column_0_label)s',
@@ -11,7 +11,5 @@ convention = {
 }
 
 metadata = MetaData(naming_convention=convention)
-# instantiate database object
 db = SQLAlchemy(metadata=metadata)
-# Initialize Marshmallow
 ma = Marshmallow()
