@@ -3,12 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Unit test / coverage reports
-.pytest_cache/
-
 # Environments
 env/
 .env
+
+# Ignore all instance configs containing local
+instance/*local*
 
 # Other
 tmp/

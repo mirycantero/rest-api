@@ -1,4 +1,4 @@
-from ..models.base import ma
+from app.models.db import ma
 
 
 class CerealSchema(ma.Schema):

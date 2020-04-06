@@ -1,7 +1,9 @@
-from .base import db
-from ..schemas import CerealSchema
-
+from __future__ import annotations  # enable circular refs in type hints
+from typing import List
 from sqlalchemy.sql import expression
+
+from app.models.db import db
+from app.schemas import CerealSchema
 
 
 class Cereal(db.Model):
@@ -24,17 +26,17 @@ class Cereal(db.Model):
     active = db.Column(db.Boolean, server_default=expression.true())
 
     @staticmethod
-    def get_cereals():
+    def get_cereals() -> List[Cereal]:
         cereals = Cereal.query.filter_by(active=True).all()
         return CerealSchema(many=True).dump(cereals)
 
     @staticmethod
-    def get_cereal(name):
+    def get_cereal(name: str) -> Cereal:
         cereal = Cereal.query.filter_by(name=name, active=True).first()
         return CerealSchema().dump(cereal)
 
     @staticmethod
-    def post_cereal(cereal):
+    def post_cereal(cereal: Cereal) -> Cereal:
         cereal = Cereal(
             name=cereal.get('name'),
             calories=cereal.get('calories'),
@@ -53,7 +55,7 @@ class Cereal(db.Model):
         return CerealSchema().dump(cereal)
 
     @staticmethod
-    def put_cereal(name, cereal):
+    def put_cereal(name: str, cereal: Cereal):
         Cereal.query.filter_by(name=name).update(dict(
             calories=cereal.get('calories'),
             protein=cereal.get('protein'),
@@ -67,12 +69,7 @@ class Cereal(db.Model):
         ))
         db.session.commit()
 
-        cereal = Cereal.query.filter_by(name=name).first()
-        return CerealSchema().dump(cereal)
-
     @staticmethod
-    def delete_cereal(name):
+    def delete_cereal(name: str):
         Cereal.query.filter_by(name=name).update(dict(active=False))
         db.session.commit()
-
-        return {}

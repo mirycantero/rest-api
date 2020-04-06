@@ -1,31 +1,27 @@
-import os
-
-from .config import config
-from .core import handle_error
 from flask import Flask
-from flask_marshmallow import Marshmallow
-from flask_migrate import Migrate
-from werkzeug.exceptions import default_exceptions
+from os import environ
+
+APP_NAME = 'rest-api'
 
 
-def create_app(test_config=None):
-    app = Flask(__name__)
+def create_app(instance_name):
+    app = Flask(APP_NAME, instance_relative_config=True)
 
-    env = os.environ.get("FLASK_ENV", "dev")
-    app.config.from_object(config[env])
+    # app.config.from_json(f'{instance_name}.json', silent=True)
+    app.config.from_json('local.json', silent=True)
+    app.config.from_mapping(environ)
 
-    app.config["SQLALCHEMY_ECHO"] = False
+    app.config['FLASK_ENV'] = instance_name
 
-    from .models import db
+    with app.app_context():
+        from app import models
+        from app import endpoints
+        from app import schemas
+        from app import migrations
 
-    db.init_app(app)  # initialize Flask SQLALchemy with this flask app
-    Marshmallow(app)
-    Migrate(app, db)
+        models.init_app(app)
+        endpoints.init_app(app)
+        schemas.init_app(app)
+        migrations.init_app(app)
 
-    from .endpoints.cereals import cereals
-    app.register_blueprint(cereals)
-
-    for exc in default_exceptions:
-        app.register_error_handler(exc, handle_error)
-
-    return app
+        return app

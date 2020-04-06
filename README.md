@@ -13,27 +13,6 @@ And that you have `virtualenv`
         $ pip install virtualenv
         $ virtualenv --version
 
-### Google Cloud SDK
-
-The Cloud SDK is a set of tools for Cloud Platform. We are using CloudSQL, so you will need to set it up:
-
-1. [Install Google Cloud SDK](https://cloud.google.com/sdk/docs/quickstarts)
-2. [Initializing Cloud SDK](https://cloud.google.com/sdk/docs/initializing)
-
-### Cloud SQL Proxy
-
-1.  Install the proxy (For other operating systems refer [here](https://cloud.google.com/sql/docs/postgres/connect-admin-proxy))
-
-        MacOS 64-bit: curl -o cloud_sql_proxy https://dl.google.com/cloudsql/cloud_sql_proxy.darwin.amd64
-
-2.  Make the proxy executable
-
-        $ chmod +x cloud_sql_proxy
-
-3.  Start the proxy
-
-        $ ./cloud_sql_proxy -instances=tech-mentoring-program:us-central1:rest-api=tcp:5432
-
 ## Quick start
 
 1.  Clone the Project repository.
@@ -56,12 +35,15 @@ The Cloud SDK is a set of tools for Cloud Platform. We are using CloudSQL, so yo
 
         (env) $ cp .env.example .env
 
-    Set the needed environment in the `.env` file. You can use the example values.
+    Set the needed environment in the `.env` file, if you are running this locally:
 
-5.  Make sure you are logged in to Google Cloud (verify that your GCP Account shows up)
+        # Environment
+        FLASK_ENV=local
 
-        (env) $ gcloud auth list
+5.  Make sure you have a `json` file for the environment needed inside `/instance` folder, you can base it on `default.json` and set the needed variables. E.g. you would end up with a `./instance/local.json` file.
 
-6.  Run the application:
+6.  Set your database configuration keys in the json file created in the previous step.
+
+7.  Run the application:
 
         (env) $ python main.py
