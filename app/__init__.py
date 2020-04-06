@@ -18,10 +18,12 @@ def create_app(instance_name):
         from app import endpoints
         from app import schemas
         from app import migrations
+        from app import database
 
         models.init_app(app)
         endpoints.init_app(app)
         schemas.init_app(app)
         migrations.init_app(app)
+        database.init_app(app)
 
         return app

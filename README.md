@@ -44,6 +44,10 @@ And that you have `virtualenv`
 
 6.  Set your database configuration keys in the json file created in the previous step.
 
-7.  Run the application:
+7.  To populate the database activate the following flag in the json file:
+
+        "INITIALIZE_DATA": true
+
+8.  Run the application:
 
         (env) $ python main.py
