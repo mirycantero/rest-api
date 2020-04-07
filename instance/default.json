@@ -1,4 +1,6 @@
 {
+  "AUTH0_DOMAIN": null,
+  "AUTH0_API_AUDIENCE": null,
   "DB_DRIVER": null,
   "DB_HOST": null,
   "DB_PORT": null,
