@@ -1,6 +1,6 @@
 import requests
 
-from flask import Request, Flask, current_app, _app_ctx_stack
+from flask import request, Flask, current_app, _app_ctx_stack
 from functools import wraps
 from jose import jwt
 from werkzeug.exceptions import Unauthorized
@@ -11,7 +11,7 @@ AUTH0_API_AUDIENCE = app.config['AUTH0_API_AUDIENCE']
 ALGORITHM = 'RS256'
 
 
-def get_authorization_token(request: Request) -> str:
+def get_authorization_token():
     """Obtains the access token from the Authorization Header
     """
     auth = request.headers.get('Authorization')
@@ -36,10 +36,10 @@ def get_authorization_token(request: Request) -> str:
     return token
 
 
-def requires_auth(request: Request) -> any:
+def requires_auth(f):
     """Determines if the access token is valid
     """
-    @wraps(request)
+    @wraps(f)
     def decorated(*args, **kwargs):
         token = get_authorization_token()
         jsonurl = requests.get(f'https://{AUTH0_DOMAIN}/.well-known/jwks.json')
@@ -76,6 +76,6 @@ def requires_auth(request: Request) -> any:
                     description='Unable to decode authentication token')
 
             _app_ctx_stack.top.current_user = payload
-            return request(*args, **kwargs)
+            return f(*args, **kwargs)
         raise Unauthorized(description='Unable to find appropriate key')
     return decorated
