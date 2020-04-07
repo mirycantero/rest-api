@@ -51,3 +51,17 @@ And that you have `virtualenv`
 8.  Run the application:
 
         (env) $ python main.py
+
+## Running the app - Docker
+
+### Docker Build
+
+To build the docker image, make sure that you are on the `root of the project` and run:
+
+        docker build -t docker-flask-app:latest .
+
+### Docker Run
+
+You can run the build you just created with the `docker run` command.
+
+       docker run -d -p 8080:8080 docker-flask-app:latest
